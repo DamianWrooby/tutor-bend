@@ -6,11 +6,14 @@ export class Question {
     id: number;
 
     @Column()
-    Title: string;
+    title: string;
 
     @Column()
-    Description: string;
+    description: string;
 
     @Column()
-    SheetId: number;
+    content: string;
+
+    @Column()
+    sheetId: number;
 }

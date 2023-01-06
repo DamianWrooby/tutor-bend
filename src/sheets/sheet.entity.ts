@@ -7,14 +7,14 @@ export class Sheet {
     id: number;
 
     @Column()
-    Title: string;
+    title: string;
 
     @Column()
-    Subject: string;
+    subject: string;
 
     @Column()
-    Description: string;
+    description: string;
 
     @Column()
-    Privacy: Privacy;
+    privacy: Privacy;
 }
