@@ -4,6 +4,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { User } from './user.entity';
+import { AuthService } from './auth.service';
 
 describe('UsersController', () => {
     let controller: UsersController;
@@ -14,6 +15,7 @@ describe('UsersController', () => {
             controllers: [UsersController],
             providers: [
                 UsersService,
+                AuthService,
                 { provide: getRepositoryToken(User), useValue: jest.fn() },
             ],
         }).compile();
