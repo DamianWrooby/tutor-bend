@@ -15,6 +15,7 @@ import { UsersService } from './users.service';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
 import { AuthService } from './auth.service';
+import { CurrentUser } from './decorators/current-user-decorator';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -30,6 +31,11 @@ export class UsersController {
         if (!user) {
             throw new NotFoundException('User not found');
         }
+        return user;
+    }
+
+    @Get('/whoami')
+    whoAmI(@CurrentUser() user: string) {
         return user;
     }
 
