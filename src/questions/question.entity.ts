@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { User } from '../users/user.entity';
 
 @Entity()
 export class Question {
@@ -14,6 +15,6 @@ export class Question {
     @Column()
     content: string;
 
-    @Column()
-    sheetId: number;
+    @ManyToOne(() => User, (user) => user.sheets)
+    createdBy: User;
 }

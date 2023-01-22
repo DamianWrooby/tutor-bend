@@ -1,5 +1,5 @@
 import { IsNumber, IsString } from 'class-validator';
-import { Privacy } from 'src/enums/sheet.enum';
+import { Privacy } from '../../enums/sheet.enum';
 
 export class CreateSheetDto {
     @IsString()

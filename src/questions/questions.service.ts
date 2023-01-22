@@ -2,6 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Question } from './question.entity';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class QuestionsService {
@@ -17,13 +18,13 @@ export class QuestionsService {
         title: string,
         description: string,
         content: string,
-        sheetId: number
+        createdBy: User
     ) {
         const question = this.repo.create({
             title,
             description,
             content,
-            sheetId,
+            createdBy,
         });
 
         return this.repo.save(question);

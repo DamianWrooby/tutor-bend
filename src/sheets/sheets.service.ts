@@ -2,7 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Sheet } from './sheet.entity';
-import { Privacy } from 'src/enums/sheet.enum';
+import { Privacy } from '../enums/sheet.enum';
+import { User } from '../users/user.entity';
 
 @Injectable()
 export class SheetsService {
@@ -16,16 +17,18 @@ export class SheetsService {
         title: string,
         subject: string,
         description: string,
-        privacy: Privacy
+        privacy: Privacy,
+        createdBy: User
     ) {
-        const Sheet = this.repo.create({
+        const sheet = this.repo.create({
             title,
             subject,
             description,
             privacy,
+            createdBy,
         });
 
-        return this.repo.save(Sheet);
+        return this.repo.save(sheet);
     }
 
     async remove(id: number) {

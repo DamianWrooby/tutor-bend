@@ -11,6 +11,8 @@ import {
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dtos/create-question.dto';
 import { UpdateQuestionDto } from './dtos/update-question.dto';
+import { User } from '../users/user.entity';
+import { CurrentUser } from '../users/decorators/current-user-decorator';
 
 @Controller('questions')
 export class QuestionsController {
@@ -26,12 +28,12 @@ export class QuestionsController {
     }
 
     @Post('')
-    createQuestion(@Body() body: CreateQuestionDto) {
+    createQuestion(@Body() body: CreateQuestionDto, @CurrentUser() user: User) {
         this.questionsService.create(
             body.title,
             body.description,
             body.content,
-            body.sheetId
+            user
         );
     }
 

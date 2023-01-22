@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 
 export class CreateQuestionDto {
     @IsString()
@@ -9,7 +9,4 @@ export class CreateQuestionDto {
 
     @IsString()
     content: string;
-
-    @IsNumber()
-    sheetId: number;
 }

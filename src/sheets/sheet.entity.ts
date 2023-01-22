@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { Privacy } from 'src/enums/sheet.enum';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Privacy } from '../enums/sheet.enum';
+import { User } from '../users/user.entity';
 
 @Entity()
 export class Sheet {
@@ -17,4 +18,7 @@ export class Sheet {
 
     @Column()
     privacy: Privacy;
+
+    @ManyToOne(() => User, (user) => user.sheets)
+    createdBy: User;
 }

@@ -11,6 +11,8 @@ import {
 import { SheetsService } from './sheets.service';
 import { CreateSheetDto } from './dtos/create-sheet.dto';
 import { UpdateSheetDto } from './dtos/update-sheet.dto';
+import { CurrentUser } from '../users/decorators/current-user-decorator';
+import { User } from '../users/user.entity';
 
 @Controller('sheets')
 export class SheetsController {
@@ -26,12 +28,13 @@ export class SheetsController {
     }
 
     @Post('')
-    createSheet(@Body() body: CreateSheetDto) {
+    createSheet(@Body() body: CreateSheetDto, @CurrentUser() user: User) {
         this.sheetsService.create(
             body.title,
             body.subject,
             body.description,
-            body.privacy
+            body.privacy,
+            user
         );
     }
 

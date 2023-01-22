@@ -5,7 +5,10 @@ import {
     AfterInsert,
     AfterRemove,
     AfterUpdate,
+    OneToMany,
 } from 'typeorm';
+import { Sheet } from '../sheets/sheet.entity';
+import { Question } from '../questions/question.entity';
 
 @Entity()
 export class User {
@@ -17,6 +20,12 @@ export class User {
 
     @Column()
     password: string;
+
+    @OneToMany(() => Sheet, (sheet) => sheet.createdBy)
+    sheets: Sheet[];
+
+    @OneToMany(() => Question, (question) => question.createdBy)
+    questions: Question[];
 
     @AfterInsert()
     logInsert() {
