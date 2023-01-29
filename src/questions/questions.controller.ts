@@ -7,12 +7,16 @@ import {
     Body,
     Param,
     NotFoundException,
+    UseGuards,
 } from '@nestjs/common';
 import { QuestionsService } from './questions.service';
 import { CreateQuestionDto } from './dtos/create-question.dto';
 import { UpdateQuestionDto } from './dtos/update-question.dto';
 import { User } from '../users/user.entity';
 import { CurrentUser } from '../users/decorators/current-user-decorator';
+import { Serialize } from '../interceptors/serialize.interceptor';
+import { AuthGuard } from '../guards/auth.guard';
+import { QuestionDto } from './dtos/question.dto';
 
 @Controller('questions')
 export class QuestionsController {
@@ -28,11 +32,15 @@ export class QuestionsController {
     }
 
     @Post('')
+    @UseGuards(AuthGuard)
+    @Serialize(QuestionDto)
     createQuestion(@Body() body: CreateQuestionDto, @CurrentUser() user: User) {
-        this.questionsService.create(
+        return this.questionsService.create(
             body.title,
             body.description,
             body.content,
+            body.sheetIds,
+            body.privacy,
             user
         );
     }

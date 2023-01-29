@@ -1,4 +1,5 @@
-import { IsString } from 'class-validator';
+import { IsString, IsNumber } from 'class-validator';
+import { Privacy } from '../../enums/sheet.enum';
 
 export class CreateQuestionDto {
     @IsString()
@@ -9,4 +10,10 @@ export class CreateQuestionDto {
 
     @IsString()
     content: string;
+
+    @IsNumber({}, { each: true })
+    sheetIds: number[];
+
+    @IsNumber()
+    privacy: Privacy;
 }

@@ -11,6 +11,9 @@ export class CreateSheetDto {
     @IsString()
     description: string;
 
+    @IsNumber({}, { each: true })
+    questionIds: number[];
+
     @IsNumber()
     privacy: Privacy;
 }

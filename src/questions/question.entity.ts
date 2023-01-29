@@ -1,5 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    ManyToMany,
+    JoinTable,
+} from 'typeorm';
 import { User } from '../users/user.entity';
+import { Sheet } from '../sheets/sheet.entity';
+import { Privacy } from '../enums/sheet.enum';
 
 @Entity()
 export class Question {
@@ -15,6 +24,12 @@ export class Question {
     @Column()
     content: string;
 
-    @ManyToOne(() => User, (user) => user.sheets)
+    @ManyToMany(() => Sheet, (sheet) => sheet.questions)
+    sheets: Sheet[];
+
+    @Column()
+    privacy: Privacy;
+
+    @ManyToOne(() => User, (user) => user.questions)
     createdBy: User;
 }

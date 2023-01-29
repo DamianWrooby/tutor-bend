@@ -1,51 +1,64 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Repository } from 'typeorm';
+import { Repository, In } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Question } from './question.entity';
 import { User } from '../users/user.entity';
+import { Sheet } from '../sheets/sheet.entity';
+import { Privacy } from '../enums/sheet.enum';
 
 @Injectable()
 export class QuestionsService {
     constructor(
-        @InjectRepository(Question) private repo: Repository<Question>
+        @InjectRepository(Question) private questionRepo: Repository<Question>,
+        @InjectRepository(Sheet) private sheetRepo: Repository<Sheet>
     ) {}
 
     findOne(id: number) {
-        return this.repo.findOneBy({ id });
+        return this.questionRepo.findOneBy({ id });
     }
 
-    create(
+    async create(
         title: string,
         description: string,
         content: string,
+        sheetIds: number[],
+        privacy: Privacy,
         createdBy: User
     ) {
-        const question = this.repo.create({
+        const sheets = await this.sheetRepo.findBy({
+            id: In(sheetIds),
+        });
+        if (sheets.length !== sheetIds.length) {
+            throw new NotFoundException('Sheets not found');
+        }
+        const question = this.questionRepo.create({
             title,
             description,
             content,
+            sheets,
+            privacy,
             createdBy,
         });
 
-        return this.repo.save(question);
+        return this.questionRepo.save(question);
     }
 
     async remove(id: number) {
-        const question = await this.repo.findOneBy({ id });
+        const question = await this.questionRepo.findOneBy({ id });
         if (!question) {
             throw new NotFoundException('Question not found');
         }
 
-        return this.repo.remove(question);
+        return this.questionRepo.remove(question);
     }
 
     async update(id: number, attrs: Partial<Question>) {
-        const question = await this.repo.findOneBy({ id });
+        const question = await this.questionRepo.findOneBy({ id });
         if (!question) {
             throw new NotFoundException('Question not found');
         }
         Object.assign(question, attrs);
 
-        return this.repo.save(question);
+        return this.questionRepo.save(question);
     }
 }

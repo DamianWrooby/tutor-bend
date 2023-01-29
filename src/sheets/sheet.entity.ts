@@ -1,6 +1,14 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import {
+    Entity,
+    Column,
+    PrimaryGeneratedColumn,
+    ManyToOne,
+    ManyToMany,
+    JoinTable,
+} from 'typeorm';
 import { Privacy } from '../enums/sheet.enum';
 import { User } from '../users/user.entity';
+import { Question } from '../questions/question.entity';
 
 @Entity()
 export class Sheet {
@@ -15,6 +23,10 @@ export class Sheet {
 
     @Column()
     description: string;
+
+    @ManyToMany(() => Question, (question) => question.sheets)
+    @JoinTable()
+    questions: Question[];
 
     @Column()
     privacy: Privacy;
