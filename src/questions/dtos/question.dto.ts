@@ -15,6 +15,10 @@ export class QuestionDto {
     @Expose()
     sheetIds: number[];
 
+    @Transform(({ obj }) => obj.createdBy.id)
+    @Expose()
+    createdBy: number;
+
     @Expose()
     privacy: Privacy;
 }

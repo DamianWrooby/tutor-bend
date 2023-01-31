@@ -23,6 +23,8 @@ export class QuestionsController {
     constructor(private questionsService: QuestionsService) {}
 
     @Get('/:id')
+    @UseGuards(AuthGuard)
+    @Serialize(QuestionDto)
     async findQuestion(@Param('id') id: string) {
         const question = this.questionsService.findOne(parseInt(id));
         if (!question) {

@@ -24,6 +24,7 @@ export class SheetsController {
 
     @Get('/:id')
     @UseGuards(AuthGuard)
+    @Serialize(SheetDto)
     async findSheet(@Param('id') id: string) {
         const sheet = this.sheetsService.findOne(parseInt(id));
         if (!sheet) {

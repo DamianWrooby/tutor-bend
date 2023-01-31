@@ -14,7 +14,12 @@ export class QuestionsService {
     ) {}
 
     findOne(id: number) {
-        return this.questionRepo.findOneBy({ id });
+        return this.questionRepo.findOne({
+            where: {
+                id,
+            },
+            relations: ['sheets', 'createdBy'],
+        });
     }
 
     async create(

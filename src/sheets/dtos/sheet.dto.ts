@@ -11,13 +11,13 @@ export class SheetDto {
     @Expose()
     description: string;
 
-    @Transform(({ obj }) => obj.questions?.map((question) => question.id))
+    @Transform(({ obj }) => obj.questions.map((question) => question.id))
     @Expose()
     questionIds: number[];
 
     @Transform(({ obj }) => obj.createdBy.id)
     @Expose()
-    createdBy: any;
+    createdBy: number;
 
     @Expose()
     privacy: Privacy;
