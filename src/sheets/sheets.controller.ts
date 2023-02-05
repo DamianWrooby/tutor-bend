@@ -17,6 +17,7 @@ import { User } from '../users/user.entity';
 import { SheetDto } from './dtos/sheet.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthGuard } from '../guards/auth.guard';
+import { TeacherGuard } from 'src/guards/teacher.guard';
 
 @Controller('sheets')
 export class SheetsController {
@@ -35,6 +36,7 @@ export class SheetsController {
 
     @Post('')
     @UseGuards(AuthGuard)
+    @UseGuards(TeacherGuard)
     @Serialize(SheetDto)
     createSheet(@Body() body: CreateSheetDto, @CurrentUser() user: User) {
         return this.sheetsService.create(
