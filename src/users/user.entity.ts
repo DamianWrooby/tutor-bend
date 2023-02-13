@@ -23,7 +23,7 @@ export class User {
     password: string;
 
     @Column()
-    roles: UserRole[];
+    role: UserRole;
 
     @OneToMany(() => Sheet, (sheet) => sheet.createdBy)
     sheets: Sheet[];

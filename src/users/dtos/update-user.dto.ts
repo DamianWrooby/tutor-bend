@@ -10,7 +10,6 @@ export class UpdateUserDto {
     @IsOptional()
     password: string;
 
-    @ArrayNotEmpty()
     @IsOptional()
-    roles: UserRole[];
+    roles: UserRole;
 }
