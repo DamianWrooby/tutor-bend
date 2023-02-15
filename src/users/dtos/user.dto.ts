@@ -9,5 +9,5 @@ export class UserDto {
     email: string;
 
     @Expose()
-    roles: UserRole;
+    role: UserRole;
 }

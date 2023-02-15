@@ -17,7 +17,8 @@ import { User } from '../users/user.entity';
 import { SheetDto } from './dtos/sheet.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthGuard } from '../guards/auth.guard';
-import { TeacherGuard } from 'src/guards/teacher.guard';
+import { RoleGuard } from './../guards/role.guard';
+import { UserRole } from 'src/enums/user.enum';
 
 @Controller('sheets')
 export class SheetsController {
@@ -36,7 +37,7 @@ export class SheetsController {
 
     @Post('')
     @UseGuards(AuthGuard)
-    @UseGuards(TeacherGuard)
+    @UseGuards(RoleGuard([UserRole.TEACHER, UserRole.ADMIN]))
     @Serialize(SheetDto)
     createSheet(@Body() body: CreateSheetDto, @CurrentUser() user: User) {
         return this.sheetsService.create(
@@ -50,11 +51,15 @@ export class SheetsController {
     }
 
     @Patch('/:id')
+    @UseGuards(AuthGuard)
+    @UseGuards(RoleGuard([UserRole.TEACHER, UserRole.ADMIN]))
     updateSheet(@Param('id') id: string, @Body() body: UpdateSheetDto) {
         this.sheetsService.update(parseInt(id), body);
     }
 
     @Delete('/:id')
+    @UseGuards(AuthGuard)
+    @UseGuards(RoleGuard([UserRole.TEACHER, UserRole.ADMIN]))
     removeSheet(@Param('id') id: string) {
         this.sheetsService.remove(parseInt(id));
     }

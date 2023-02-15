@@ -9,7 +9,7 @@ import { QuestionsModule } from './questions/questions.module';
 import { User } from './users/user.entity';
 import { Sheet } from './sheets/sheet.entity';
 import { Question } from './questions/question.entity';
-import cookieSession from 'cookie-session';
+import cookieSession = require('cookie-session');
 
 @Module({
     imports: [
