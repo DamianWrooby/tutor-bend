@@ -28,7 +28,7 @@ export class SheetsController {
     @UseGuards(AuthGuard)
     @Serialize(SheetDto)
     async findSheet(@Param('id') id: string) {
-        const sheet = this.sheetsService.findOne(parseInt(id));
+        const sheet = await this.sheetsService.findOne(parseInt(id));
         if (!sheet) {
             throw new NotFoundException('Sheet not found');
         }

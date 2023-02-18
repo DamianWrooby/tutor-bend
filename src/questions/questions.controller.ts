@@ -26,7 +26,7 @@ export class QuestionsController {
     @UseGuards(AuthGuard)
     @Serialize(QuestionDto)
     async findQuestion(@Param('id') id: string) {
-        const question = this.questionsService.findOne(parseInt(id));
+        const question = await this.questionsService.findOne(parseInt(id));
         if (!question) {
             throw new NotFoundException('Question not found');
         }

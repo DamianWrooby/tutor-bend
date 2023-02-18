@@ -3,6 +3,7 @@ import { UsersService } from './users.service';
 import { BadRequestException } from '@nestjs/common';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
+import { UserRole } from 'src/enums/user.enum';
 
 const scrypt = promisify(_scrypt);
 
@@ -10,7 +11,7 @@ const scrypt = promisify(_scrypt);
 export class AuthService {
     constructor(private usersService: UsersService) {}
 
-    async signup(email: string, password: string) {
+    async signup(email: string, password: string, role: UserRole) {
         const users = await this.usersService.find(email);
 
         if (users.length) {
@@ -21,7 +22,7 @@ export class AuthService {
         const hash = (await scrypt(password, salt, 32)) as Buffer;
         const dbPassword = `${salt}.${hash.toString('hex')}`;
 
-        const user = await this.usersService.create(email, dbPassword);
+        const user = await this.usersService.create(email, dbPassword, role);
 
         return user;
     }

@@ -14,6 +14,9 @@ export class QuestionsService {
     ) {}
 
     findOne(id: number) {
+        if (!id) {
+            return null;
+        }
         return this.questionRepo.findOne({
             where: {
                 id,
