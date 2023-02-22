@@ -3,7 +3,7 @@ import { UsersService } from './users.service';
 import { BadRequestException } from '@nestjs/common';
 import { randomBytes, scrypt as _scrypt } from 'crypto';
 import { promisify } from 'util';
-import { UserRole } from 'src/enums/user.enum';
+import { UserRole } from '../enums/user.enum';
 
 const scrypt = promisify(_scrypt);
 

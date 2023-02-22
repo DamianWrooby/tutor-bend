@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { Sheet } from '../sheets/sheet.entity';
 import { Question } from '../questions/question.entity';
-import { UserRole } from 'src/enums/user.enum';
+import { UserRole } from '../enums/user.enum';
 
 @Entity()
 export class User {

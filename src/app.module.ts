@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { SheetsModule } from './sheets/sheets.module';
 import { QuestionsModule } from './questions/questions.module';
+import { TypeOrmConfigService } from './config/typeorm.config';
 import cookieSession = require('cookie-session');
 
 @Module({
@@ -14,7 +15,9 @@ import cookieSession = require('cookie-session');
             isGlobal: true,
             envFilePath: `.env.${process.env.NODE_ENV}`,
         }),
-        TypeOrmModule.forRoot(),
+        TypeOrmModule.forRootAsync({
+            useClass: TypeOrmConfigService,
+        }),
         SheetsModule,
         QuestionsModule,
         UsersModule,
