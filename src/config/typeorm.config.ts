@@ -8,10 +8,14 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
 
     createTypeOrmOptions(): TypeOrmModuleOptions {
         return {
-            type: 'sqlite',
+            type: this.configService.get<any>('DB_TYPE'),
+            url: this.configService.get<string>('DATABASE_URL'),
             synchronize: false,
             database: this.configService.get<string>('DB_NAME'),
             autoLoadEntities: true,
+            ssl: {
+                rejectUnauthorized: false,
+            },
         };
     }
 }
