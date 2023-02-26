@@ -1,6 +1,6 @@
 import { Client } from 'pg';
 
-var conString = `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@mel.db.elephantsql.com/savujtkk`;
+var conString = `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@mel.db.elephantsql.com/${process.env.DB_USER}`;
 var client = new Client(conString);
 client.connect(function (err) {
     if (err) {
