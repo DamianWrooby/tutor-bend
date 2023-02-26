@@ -13,6 +13,7 @@ export class TypeOrmConfigService implements TypeOrmOptionsFactory {
             synchronize: false,
             database: this.configService.get<string>('DB_NAME'),
             autoLoadEntities: true,
+            migrationsTransactionMode: 'each',
             ssl: {
                 rejectUnauthorized: false,
             },
