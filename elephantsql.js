@@ -1,7 +1,8 @@
-import { Client } from 'pg';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const pg = require('pg');
 
-var conString = `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@mel.db.elephantsql.com/${process.env.DB_USER}`;
-var client = new Client(conString);
+const conString = `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@mel.db.elephantsql.com/${process.env.DB_USER}`;
+const client = new pg.Client(conString);
 client.connect(function (err) {
     if (err) {
         return console.error('could not connect to postgres', err);
