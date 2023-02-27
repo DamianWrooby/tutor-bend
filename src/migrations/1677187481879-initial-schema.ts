@@ -5,13 +5,13 @@ export class initialSchema1677187481879 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(
-            `CREATE TABLE "question" ("id" integer PRIMARY KEY SERIAL NOT NULL, "title" varchar NOT NULL, "description" varchar NOT NULL, "content" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer)`
+            `CREATE TABLE "question" ("id" integer PRIMARY KEY DEFAULT nextval('my_table_id_seq') NOT NULL, "title" varchar NOT NULL, "description" varchar NOT NULL, "content" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer)`
         );
         await queryRunner.query(
-            `CREATE TABLE "sheet" ("id" integer PRIMARY KEY SERIAL NOT NULL, "title" varchar NOT NULL, "subject" varchar NOT NULL, "description" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer)`
+            `CREATE TABLE "sheet" ("id" integer PRIMARY KEY DEFAULT nextval('my_table_id_seq') NOT NULL, "title" varchar NOT NULL, "subject" varchar NOT NULL, "description" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer)`
         );
         await queryRunner.query(
-            `CREATE TABLE "user" ("id" integer PRIMARY KEY SERIAL NOT NULL, "email" varchar NOT NULL, "password" varchar NOT NULL, "role" varchar NOT NULL)`
+            `CREATE TABLE "user" ("id" integer PRIMARY KEY DEFAULT nextval('my_table_id_seq') NOT NULL, "email" varchar NOT NULL, "password" varchar NOT NULL, "role" varchar NOT NULL)`
         );
         await queryRunner.query(
             `CREATE TABLE "sheet_questions_question" ("sheetId" integer NOT NULL, "questionId" integer NOT NULL, PRIMARY KEY ("sheetId", "questionId"))`
@@ -23,7 +23,7 @@ export class initialSchema1677187481879 implements MigrationInterface {
             `CREATE INDEX "IDX_c2ebae727ba7e5e17c7be874d1" ON "sheet_questions_question" ("questionId") `
         );
         await queryRunner.query(
-            `CREATE TABLE "temporary_question" ("id" integer PRIMARY KEY SERIAL NOT NULL, "title" varchar NOT NULL, "description" varchar NOT NULL, "content" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer, CONSTRAINT "FK_187915d8eaa010cde8b053b35d5" FOREIGN KEY ("createdById") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)`
+            `CREATE TABLE "temporary_question" ("id" integer PRIMARY KEY DEFAULT nextval('my_table_id_seq') NOT NULL, "title" varchar NOT NULL, "description" varchar NOT NULL, "content" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer, CONSTRAINT "FK_187915d8eaa010cde8b053b35d5" FOREIGN KEY ("createdById") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)`
         );
         await queryRunner.query(
             `INSERT INTO "temporary_question"("id", "title", "description", "content", "privacy", "createdById") SELECT "id", "title", "description", "content", "privacy", "createdById" FROM "question"`
@@ -33,7 +33,7 @@ export class initialSchema1677187481879 implements MigrationInterface {
             `ALTER TABLE "temporary_question" RENAME TO "question"`
         );
         await queryRunner.query(
-            `CREATE TABLE "temporary_sheet" ("id" integer PRIMARY KEY SERIAL NOT NULL, "title" varchar NOT NULL, "subject" varchar NOT NULL, "description" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer, CONSTRAINT "FK_e6a4433d6ccfce87c9cee67f32c" FOREIGN KEY ("createdById") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)`
+            `CREATE TABLE "temporary_sheet" ("id" integer PRIMARY KEY DEFAULT nextval('my_table_id_seq') NOT NULL, "title" varchar NOT NULL, "subject" varchar NOT NULL, "description" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer, CONSTRAINT "FK_e6a4433d6ccfce87c9cee67f32c" FOREIGN KEY ("createdById") REFERENCES "user" ("id") ON DELETE NO ACTION ON UPDATE NO ACTION)`
         );
         await queryRunner.query(
             `INSERT INTO "temporary_sheet"("id", "title", "subject", "description", "privacy", "createdById") SELECT "id", "title", "subject", "description", "privacy", "createdById" FROM "sheet"`
@@ -87,7 +87,7 @@ export class initialSchema1677187481879 implements MigrationInterface {
             `ALTER TABLE "sheet" RENAME TO "temporary_sheet"`
         );
         await queryRunner.query(
-            `CREATE TABLE "sheet" ("id" integer PRIMARY KEY SERIAL NOT NULL, "title" varchar NOT NULL, "subject" varchar NOT NULL, "description" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer)`
+            `CREATE TABLE "sheet" ("id" integer PRIMARY KEY DEFAULT nextval('my_table_id_seq') NOT NULL, "title" varchar NOT NULL, "subject" varchar NOT NULL, "description" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer)`
         );
         await queryRunner.query(
             `INSERT INTO "sheet"("id", "title", "subject", "description", "privacy", "createdById") SELECT "id", "title", "subject", "description", "privacy", "createdById" FROM "temporary_sheet"`
@@ -97,7 +97,7 @@ export class initialSchema1677187481879 implements MigrationInterface {
             `ALTER TABLE "question" RENAME TO "temporary_question"`
         );
         await queryRunner.query(
-            `CREATE TABLE "question" ("id" integer PRIMARY KEY SERIAL NOT NULL, "title" varchar NOT NULL, "description" varchar NOT NULL, "content" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer)`
+            `CREATE TABLE "question" ("id" integer PRIMARY KEY DEFAULT nextval('my_table_id_seq') NOT NULL, "title" varchar NOT NULL, "description" varchar NOT NULL, "content" varchar NOT NULL, "privacy" integer NOT NULL, "createdById" integer)`
         );
         await queryRunner.query(
             `INSERT INTO "question"("id", "title", "description", "content", "privacy", "createdById") SELECT "id", "title", "description", "content", "privacy", "createdById" FROM "temporary_question"`
