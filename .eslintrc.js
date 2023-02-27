@@ -15,7 +15,7 @@ module.exports = {
         node: true,
         jest: true,
     },
-    ignorePatterns: ['.eslintrc.js'],
+    ignorePatterns: ['.eslintrc.js', 'ormconfig.js'],
     rules: {
         indent: ['error', 4, { ignoredNodes: ['PropertyDefinition'] }],
         '@typescript-eslint/interface-name-prefix': 'off',

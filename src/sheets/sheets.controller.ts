@@ -18,7 +18,7 @@ import { SheetDto } from './dtos/sheet.dto';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthGuard } from '../guards/auth.guard';
 import { RoleGuard } from './../guards/role.guard';
-import { UserRole } from 'src/enums/user.enum';
+import { UserRole } from '../enums/user.enum';
 
 @Controller('sheets')
 export class SheetsController {

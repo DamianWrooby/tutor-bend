@@ -6,9 +6,7 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { SheetsModule } from './sheets/sheets.module';
 import { QuestionsModule } from './questions/questions.module';
-import { User } from './users/user.entity';
-import { Sheet } from './sheets/sheet.entity';
-import { Question } from './questions/question.entity';
+import { TypeOrmConfigService } from './config/typeorm.config';
 import cookieSession = require('cookie-session');
 
 @Module({
@@ -18,13 +16,7 @@ import cookieSession = require('cookie-session');
             envFilePath: `.env.${process.env.NODE_ENV}`,
         }),
         TypeOrmModule.forRootAsync({
-            inject: [ConfigService],
-            useFactory: (config: ConfigService) => ({
-                type: 'sqlite',
-                database: config.get<string>('DB_NAME'),
-                entities: [User, Sheet, Question],
-                synchronize: true,
-            }),
+            useClass: TypeOrmConfigService,
         }),
         SheetsModule,
         QuestionsModule,
