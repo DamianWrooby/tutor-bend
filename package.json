@@ -8,6 +8,9 @@
     "engines": {
         "node": "14.16.x"
     },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org"
+    },
     "scripts": {
         "prebuild": "rimraf dist",
         "build": "nest build",
