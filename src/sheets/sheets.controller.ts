@@ -15,10 +15,12 @@ import { UpdateSheetDto } from './dtos/update-sheet.dto';
 import { CurrentUser } from '../users/decorators/current-user-decorator';
 import { User } from '../users/user.entity';
 import { SheetDto } from './dtos/sheet.dto';
+import { Sheet } from './sheet.entity';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { AuthGuard } from '../guards/auth.guard';
 import { RoleGuard } from './../guards/role.guard';
 import { UserRole } from '../enums/user.enum';
+import { Privacy } from 'src/enums/sheet.enum';
 
 @Controller('sheets')
 export class SheetsController {
@@ -27,10 +29,13 @@ export class SheetsController {
     @Get('/:id')
     @UseGuards(AuthGuard)
     @Serialize(SheetDto)
-    async findSheet(@Param('id') id: string) {
+    async findSheet(@Param('id') id: string, @CurrentUser() user: User) {
         const sheet = await this.sheetsService.findOne(parseInt(id));
         if (!sheet) {
             throw new NotFoundException('Sheet not found');
+        }
+        if (!this.canManageSheet(sheet, user)) {
+            throw new NotFoundException('Inufficient permissions');
         }
         return sheet;
     }
@@ -53,14 +58,38 @@ export class SheetsController {
     @Patch('/:id')
     @UseGuards(AuthGuard)
     @UseGuards(RoleGuard([UserRole.TEACHER, UserRole.ADMIN]))
-    updateSheet(@Param('id') id: string, @Body() body: UpdateSheetDto) {
-        this.sheetsService.update(parseInt(id), body);
+    async updateSheet(
+        @Param('id') id: string,
+        @Body() body: UpdateSheetDto,
+        @CurrentUser() user: User
+    ) {
+        const sheet = await this.sheetsService.findOne(parseInt(id));
+        if (!this.canManageSheet(sheet, user)) {
+            throw new NotFoundException('Inufficient permissions');
+        } else {
+            this.sheetsService.update(parseInt(id), body);
+        }
     }
 
     @Delete('/:id')
     @UseGuards(AuthGuard)
     @UseGuards(RoleGuard([UserRole.TEACHER, UserRole.ADMIN]))
-    removeSheet(@Param('id') id: string) {
-        this.sheetsService.remove(parseInt(id));
+    async removeSheet(@Param('id') id: string, @CurrentUser() user: User) {
+        const sheet = await this.sheetsService.findOne(parseInt(id));
+        if (!this.canManageSheet(sheet, user)) {
+            throw new NotFoundException('Inufficient permissions');
+        } else {
+            this.sheetsService.remove(parseInt(id));
+        }
+    }
+
+    private canManageSheet(sheet: Sheet, user: User): boolean {
+        if (
+            sheet.privacy === Privacy.PRIVATE &&
+            sheet.createdBy.id !== user.id
+        ) {
+            return false;
+        }
+        return true;
     }
 }
