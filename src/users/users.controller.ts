@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
+import { LoginUserDto } from './dtos/login-user.dto';
 import { UsersService } from './users.service';
 import { Serialize } from '../interceptors/serialize.interceptor';
 import { UserDto } from './dtos/user.dto';
@@ -60,7 +61,7 @@ export class UsersController {
     }
 
     @Post('/signin')
-    async signin(@Body() body: CreateUserDto, @Session() session: any) {
+    async signin(@Body() body: LoginUserDto, @Session() session: any) {
         const user = await this.authService.signin(body.email, body.password);
         session.userId = user.id;
         return user;
